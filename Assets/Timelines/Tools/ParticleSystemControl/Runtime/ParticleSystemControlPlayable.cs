@@ -1,3 +1,18 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:1d2eb780c936461fae15eb49de7bc14fc7e6c116374fce74e6020e0d65907a60
-size 387
+// Timeline Particle Control Example
+// https://github.com/keijiro/TimelineParticleControl
+
+using UnityEngine;
+using UnityEngine.Playables;
+
+namespace Klak.Timeline {
+
+// Playable clip class for particle system control
+
+[System.Serializable]
+public class ParticleSystemControlPlayable : PlayableBehaviour
+{
+    public float rateOverTime = 10;
+    public float rateOverDistance = 0;
+}
+
+}

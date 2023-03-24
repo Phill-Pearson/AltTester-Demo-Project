@@ -1,3 +1,34 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:33a19ee393b4ae5a43afae44dafb725233c00349f9a49de9e7a5146ec37f7b28
-size 1106
+using System;
+using UnityEngine;
+using UnityEngine.Playables;
+using UnityEngine.Timeline;
+using UnityEngine.AI;
+
+public class NavMeshAgentControlMixerBehaviour : PlayableBehaviour
+{
+    public override void ProcessFrame(Playable playable, FrameData info, object playerData)
+    {
+        NavMeshAgent trackBinding = playerData as NavMeshAgent;
+
+        if (!trackBinding)
+            return;
+
+        int inputCount = playable.GetInputCount();
+
+        for (int i = 0; i < inputCount; i++)
+        {
+            float inputWeight = playable.GetInputWeight(i);
+            ScriptPlayable<NavMeshAgentControlBehaviour> inputPlayable = (ScriptPlayable<NavMeshAgentControlBehaviour>)playable.GetInput(i);
+            NavMeshAgentControlBehaviour input = inputPlayable.GetBehaviour();
+
+            if (inputWeight > 0.5f && !input.destinationSet && input.destination)
+            {
+                if (!trackBinding.isOnNavMesh)
+                    continue;
+
+                trackBinding.SetDestination (input.destination.position);
+                input.destinationSet = true;
+            }
+        }
+    }
+}

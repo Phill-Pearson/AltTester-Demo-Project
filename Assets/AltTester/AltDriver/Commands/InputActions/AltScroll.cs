@@ -1,3 +1,23 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:f0ce72354b09c5828f375411f09fdfdfcdd8bfe843329acf38ab42ab37bb7af2
-size 748
+namespace Altom.AltDriver.Commands
+{
+    public class AltScroll : AltBaseCommand
+    {
+        AltScrollParams cmdParams;
+        public AltScroll(IDriverCommunication commHandler, float speed, float speedHorizontal, float duration, bool wait) : base(commHandler)
+        {
+            cmdParams = new AltScrollParams(speed, duration, wait, speedHorizontal);
+        }
+        public void Execute()
+        {
+            CommHandler.Send(cmdParams);
+            var data = CommHandler.Recvall<string>(cmdParams);
+            ValidateResponse("Ok", data);
+
+            if (cmdParams.wait)
+            {
+                data = CommHandler.Recvall<string>(cmdParams);
+                ValidateResponse("Finished", data);
+            }
+        }
+    }
+}

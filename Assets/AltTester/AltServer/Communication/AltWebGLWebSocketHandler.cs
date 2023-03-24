@@ -1,3 +1,30 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:150a7065211773faea760ebe898e0fc2f3d2a76e14b17ca9f8bf40321f563d8c
-size 815
+using System.Text;
+
+namespace Altom.AltTester.Communication
+{
+#if UNITY_WEBGL
+    public class AltWebGLWebSocketHandler : BaseWebSocketHandler
+    {
+        protected readonly WebGLWebSocket _webSocket;
+
+        public AltWebGLWebSocketHandler(ICommandHandler cmdHandler, WebGLWebSocket webSocket) : base(cmdHandler)
+        {
+            this._webSocket = webSocket;
+            this._webSocket.OnMessage += this.onMessage;
+
+            _commandHandler.OnSendMessage += (message) =>
+             {
+                 this._webSocket.SendText(message).ConfigureAwait(false).GetAwaiter().GetResult();
+             };
+
+
+
+        }
+        private void onMessage(byte[] data)
+        {
+            var message = Encoding.UTF8.GetString(data);
+            this._commandHandler.OnMessage(message);
+        }
+    }
+#endif
+}

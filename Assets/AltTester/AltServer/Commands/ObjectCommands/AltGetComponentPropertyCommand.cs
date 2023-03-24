@@ -1,3 +1,38 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:0cba334f52e477b2e4dd722b2ff518afd8c2a92984c772e11dc3ca07723c4988
-size 1466
+using Altom.AltDriver.Commands;
+
+namespace Altom.AltTester.Commands
+{
+    class AltGetComponentPropertyCommand : AltReflectionMethodsCommand<AltGetObjectComponentPropertyParams, object>
+    {
+        public AltGetComponentPropertyCommand(AltGetObjectComponentPropertyParams cmdParams) : base(cmdParams)
+        {
+        }
+
+        public override object Execute()
+        {
+            System.Type type = GetType(CommandParams.component, CommandParams.assembly);
+            System.Reflection.MemberInfo memberInfo;
+            var propertySplited = CommandParams.property.Split('.');
+            string propertyName;
+            object response;
+            if (CommandParams.altObject != null)
+                response = GetValueForMember(CommandParams.altObject, propertySplited, type);
+            else
+            {
+                var instance = GetInstance(null, propertySplited, type);
+                if (propertySplited.Length > 1)
+                    propertyName = propertySplited[propertySplited.Length - 1];
+                else
+                    propertyName = CommandParams.property;
+
+                if (instance == null)
+                    memberInfo = GetMemberForObjectComponent(type, propertyName);
+                else
+                    memberInfo = GetMemberForObjectComponent(instance.GetType(), propertyName);
+
+                response = GetValue(instance, memberInfo, -1);
+            }
+            return response;
+        }
+    }
+}

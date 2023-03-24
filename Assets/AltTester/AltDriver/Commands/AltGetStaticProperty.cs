@@ -1,3 +1,20 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:52a9762ff1b8be91f3d0c02641fc68c7a2c83accdbe3989798f514dcef633f5d
-size 702
+using System.Collections.Generic;
+using Newtonsoft.Json;
+
+namespace Altom.AltDriver.Commands
+{
+    public class AltGetStaticProperty<T> : AltBaseCommand
+    {
+        AltGetObjectComponentPropertyParams cmdParams;
+        public AltGetStaticProperty(IDriverCommunication commHandler, string componentName, string propertyName, string assemblyName, int maxDepth) : base(commHandler)
+        {
+            cmdParams = new AltGetObjectComponentPropertyParams(null, componentName, propertyName, assemblyName, maxDepth);
+        }
+        public T Execute()
+        {
+            CommHandler.Send(cmdParams);
+            T data = CommHandler.Recvall<T>(cmdParams);
+            return data;
+        }
+    }
+}

@@ -1,3 +1,25 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:3dada0868885c97d3af85e6b6e0d41d517508854dffcdb2fb4d74467d49b215e
-size 1047
+using Altom.AltDriver;
+using Altom.AltDriver.Commands;
+
+namespace Altom.AltTester.Commands
+{
+    class AltPointerExitObjectCommand : AltCommand<AltPointerExitObjectParams, AltObject>
+    {
+
+        public AltPointerExitObjectCommand(AltPointerExitObjectParams cmdParams) : base(cmdParams)
+        {
+        }
+
+        public override AltObject Execute()
+        {
+            var pointerEventData = new UnityEngine.EventSystems.PointerEventData(UnityEngine.EventSystems.EventSystem.current);
+            UnityEngine.GameObject gameObject = AltRunner.GetGameObject(CommandParams.altObject.id);
+            UnityEngine.EventSystems.ExecuteEvents.Execute(gameObject, pointerEventData, UnityEngine.EventSystems.ExecuteEvents.pointerExitHandler);
+            var camera = AltRunner._altRunner.FoundCameraById(CommandParams.altObject.idCamera);
+
+            return camera != null ?
+                AltRunner._altRunner.GameObjectToAltObject(gameObject, camera) :
+                AltRunner._altRunner.GameObjectToAltObject(gameObject);
+        }
+    }
+}

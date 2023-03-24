@@ -1,3 +1,25 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:e43d55ecd9525be91f08cd751d8e16b3e915b62cbece23153f58dd359f943282
-size 514
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Playables;
+using UnityEngine.Events;
+
+public class CutsceneTimelineBehaviour : MonoBehaviour
+{
+
+    [Header("Timeline")]
+    public PlayableDirector cutsceneTimeline;
+
+    [Header("Marker Events")]
+    public UnityEvent cutsceneTimelineFinished;
+
+    public void StartTimeline()
+    {
+        cutsceneTimeline.Play();
+    }
+
+    public void TimelineFinished()
+    {
+        cutsceneTimelineFinished.Invoke();
+    }
+}

@@ -1,3 +1,16 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:a4602d958669954855962528c09a9f5e03be07ffed4471cbc221348245295ec3
-size 522
+namespace Altom.AltDriver.Commands
+{
+    public class AltGetIntKeyPlayerPref : AltBaseCommand
+    {
+        readonly AltGetKeyPlayerPrefParams cmdParams;
+        public AltGetIntKeyPlayerPref(IDriverCommunication commHandler, string keyName) : base(commHandler)
+        {
+            cmdParams = new AltGetKeyPlayerPrefParams(keyName, PlayerPrefKeyType.Int);
+        }
+        public int Execute()
+        {
+            CommHandler.Send(cmdParams);
+            return CommHandler.Recvall<int>(cmdParams);
+        }
+    }
+}

@@ -1,3 +1,18 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:aa12589848662fe422d3f12852aff36e0a249cb0e4d66d4c51039cceab2e0866
-size 444
+using Altom.AltDriver;
+
+namespace Altom.AltTester
+{
+    public static class AltVectorExtensions
+    {
+        public static UnityEngine.Vector2 ToUnity(this AltVector2 vector2)
+        {
+            return new UnityEngine.Vector2(vector2.x, vector2.y);
+        }
+
+        public static UnityEngine.Vector3 ToUnity(this AltVector3 vector3)
+        {
+            return new UnityEngine.Vector3(vector3.x, vector3.y, vector3.z);
+        }
+    }
+
+}

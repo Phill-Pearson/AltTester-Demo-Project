@@ -1,3 +1,18 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:8b44297f0c861ae3af4b934a0d405347dfcdfc9cd49acb045d403b33dd292353
-size 539
+namespace Altom.AltDriver.Commands
+{
+    public class AltFindObjectAtCoordinates : AltCommandReturningAltElement
+    {
+        AltFindObjectAtCoordinatesParams cmdParams;
+
+        public AltFindObjectAtCoordinates(IDriverCommunication commHandler, AltVector2 coordinates) : base(commHandler)
+        {
+            cmdParams = new AltFindObjectAtCoordinatesParams(coordinates);
+        }
+
+        public AltObject Execute()
+        {
+            CommHandler.Send(cmdParams);
+            return ReceiveAltObject(cmdParams);
+        }
+    }
+}

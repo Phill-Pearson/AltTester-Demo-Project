@@ -1,3 +1,36 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:925fac93b4a69511d59a77687c1f72d1f60a569ca813c84748882f4bd0b73de3
-size 1163
+using UnityEngine;
+using UnityEngine.Playables;
+using UnityEngine.Timeline;
+using System.Collections.Generic;
+using UnityEngine.UI;
+
+[TrackColor(0.875f, 0.5944853f, 0.1737132f)]
+[TrackClipType(typeof(ScreenFaderClip))]
+[TrackBindingType(typeof(Image))]
+public class ScreenFaderTrack : TrackAsset
+{
+    public override Playable CreateTrackMixer(PlayableGraph graph, GameObject go, int inputCount)
+    {
+        return ScriptPlayable<ScreenFaderMixerBehaviour>.Create (graph, inputCount);
+    }
+
+    public override void GatherProperties (PlayableDirector director, IPropertyCollector driver)
+    {
+#if UNITY_EDITOR
+        Image trackBinding = director.GetGenericBinding(this) as Image;
+        if (trackBinding == null)
+            return;
+
+        var serializedObject = new UnityEditor.SerializedObject (trackBinding);
+        var iterator = serializedObject.GetIterator();
+        while (iterator.NextVisible(true))
+        {
+            if (iterator.hasVisibleChildren)
+                continue;
+
+            driver.AddFromName<Image>(trackBinding.gameObject, iterator.propertyPath);
+        }
+#endif
+        base.GatherProperties (director, driver);
+    }
+}

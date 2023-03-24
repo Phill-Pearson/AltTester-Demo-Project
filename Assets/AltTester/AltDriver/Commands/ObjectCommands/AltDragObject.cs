@@ -1,3 +1,16 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:de87d9d3eabb3c67c4b31aa5e43ad4c43ab6acf6bbd794d64ab0ada2fecceb13
-size 511
+namespace Altom.AltDriver.Commands
+{
+    public class AltDragObject : AltCommandReturningAltElement
+    {
+        AltDragObjectParams cmdParams;
+        public AltDragObject(IDriverCommunication commHandler, AltVector2 position, AltObject altObject) : base(commHandler)
+        {
+            cmdParams = new AltDragObjectParams(altObject, position);
+        }
+        public AltObject Execute()
+        {
+            CommHandler.Send(cmdParams);
+            return ReceiveAltObject(cmdParams);
+        }
+    }
+}

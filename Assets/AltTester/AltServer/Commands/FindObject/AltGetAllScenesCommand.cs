@@ -1,3 +1,20 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:0d901418388dc72f56f9656ebc627df62921ad3c0d25cbe45261b7511ccde734
-size 754
+﻿using System.Collections.Generic;
+using Altom.AltDriver.Commands;
+
+namespace Altom.AltTester.Commands
+{
+    public class AltGetAllScenesCommand : AltCommand<AltGetAllScenesParams, List<string>>
+    {
+        public AltGetAllScenesCommand(AltGetAllScenesParams cmdParam) : base(cmdParam) { }
+        public override List<string> Execute()
+        {
+            var sceneNames = new List<string>();
+            for (int i = 0; i < UnityEngine.SceneManagement.SceneManager.sceneCountInBuildSettings; i++)
+            {
+                var s = System.IO.Path.GetFileNameWithoutExtension(UnityEngine.SceneManagement.SceneUtility.GetScenePathByBuildIndex(i));
+                sceneNames.Add(s);
+            }
+            return sceneNames;
+        }
+    }
+}

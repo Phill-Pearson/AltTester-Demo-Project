@@ -1,3 +1,21 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:49d125d88715c6cae6d54e7aad72de851c6d2681c1cf32984561c6487b8727aa
-size 564
+using System;
+using Altom.AltDriver;
+using Altom.AltDriver.Commands;
+using Altom.AltTester.Communication;
+
+namespace Altom.AltTester.Commands
+{
+    class AltTiltCommand : AltCommandWithWait<AltTiltParams, string>
+    {
+        public AltTiltCommand(ICommandHandler handler, AltTiltParams cmdParams) : base(cmdParams, handler, cmdParams.wait)
+        {
+        }
+
+        public override string Execute()
+        {
+            InputController.Tilt(CommandParams.acceleration.ToUnity(), CommandParams.duration, onFinish);
+            return "Ok";
+        }
+
+    }
+}

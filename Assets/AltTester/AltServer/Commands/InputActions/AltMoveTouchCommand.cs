@@ -1,3 +1,19 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:27df18a6f2925cf48be8a9f3db6af363025876b3945b1eb1ccd73a4c3088147d
-size 475
+using Altom.AltDriver;
+using Altom.AltDriver.Commands;
+
+namespace Altom.AltTester.Commands
+{
+    public class AltMoveTouchCommand : AltCommand<AltMoveTouchParams, string>
+    {
+        public AltMoveTouchCommand(AltMoveTouchParams cmdParams) : base(cmdParams)
+        {
+
+        }
+        public override string Execute()
+        {
+            InputController.MoveTouch(CommandParams.fingerId, CommandParams.coordinates.ToUnity());
+            return "Ok";
+
+        }
+    }
+}

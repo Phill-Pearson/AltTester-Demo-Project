@@ -1,3 +1,16 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:c4a69c46b25a9131c02f3f0b80565fac86603550bcc3d38b1a50ddf3a1c14243
-size 512
+namespace Altom.AltDriver.Commands
+{
+    public class AltPointerEnterObject : AltCommandReturningAltElement
+    {
+        AltPointerEnterObjectParams cmdParams;
+        public AltPointerEnterObject(IDriverCommunication commHandler, AltObject altObject) : base(commHandler)
+        {
+            cmdParams = new AltPointerEnterObjectParams(altObject);
+        }
+        public AltObject Execute()
+        {
+            CommHandler.Send(cmdParams);
+            return ReceiveAltObject(cmdParams);
+        }
+    }
+}

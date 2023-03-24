@@ -1,3 +1,16 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:b841ab485a6b7a1984fcd23241dbcaa6ceda51e2cf9fe68465399aecb6d354e6
-size 338
+namespace Altom.AltDriver
+{
+    public struct AltProperty
+    {
+        public string name;
+        public string value;
+        public AltType type;
+
+        public AltProperty(string name, string value, AltType type)
+        {
+            this.name = name;
+            this.value = value;
+            this.type = type;
+        }
+    }
+}

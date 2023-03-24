@@ -1,3 +1,20 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:5a540f731c1a857557a760855750b7cdd59a4046efea61217aadc114c5c206e5
-size 538
+using System;
+using UnityEngine;
+using UnityEngine.Playables;
+using UnityEngine.Timeline;
+
+[Serializable]
+public class ScreenFaderClip : PlayableAsset, ITimelineClipAsset
+{
+    public ScreenFaderBehaviour template = new ScreenFaderBehaviour ();
+
+    public ClipCaps clipCaps
+    {
+        get { return ClipCaps.Blending; }
+    }
+
+    public override Playable CreatePlayable (PlayableGraph graph, GameObject owner)
+    {
+        var playable = ScriptPlayable<ScreenFaderBehaviour>.Create (graph, template);
+        return playable;    }
+}

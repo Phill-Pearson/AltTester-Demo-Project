@@ -1,3 +1,38 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:6887fe50be6324bfd948369a9376913d9c580e29e7f0232d9e6f04f154db64f7
-size 899
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+
+    public class UnitCharacterAnimationBehaviour : MonoBehaviour
+    {
+        [Header("Animator")]
+        public Animator characterAnimator;
+
+        private string animGetHitParameter = "Get Hit";
+        private int animGetHitID;
+
+        private string animDieParameter = "Die";
+        private int animDieID;
+
+        void Awake()
+        {
+            SetupAnimationIDs();
+        }
+
+        void SetupAnimationIDs()
+        {
+            animGetHitID = Animator.StringToHash(animGetHitParameter);
+            animDieID = Animator.StringToHash(animDieParameter);
+        }
+
+        public void CharacterWasHit()
+        {
+            characterAnimator.SetTrigger(animGetHitID);
+        }
+
+        public void CharacterHasDied()
+        {
+            characterAnimator.SetTrigger(animDieID);
+        }
+    }
+

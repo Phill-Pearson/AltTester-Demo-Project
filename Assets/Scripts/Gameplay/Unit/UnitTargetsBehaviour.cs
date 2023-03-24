@@ -1,3 +1,67 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:2f9d37c2a51d4b0c3abda4b90cc21a946907c3fad8e436cff42ba4a85bd29d97
-size 1690
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+
+    public class UnitTargetsBehaviour : MonoBehaviour
+    {
+        [Header("Targets")]
+        public List<UnitController> targetUnits;
+
+        public void AddTargetUnits(List<UnitController> addedUnits)
+        {
+
+            targetUnits.Clear();
+
+            for(int i = 0; i < addedUnits.Count; i++)
+            {
+                targetUnits.Add(addedUnits[i]);
+            }
+        }
+
+        public void RemoveTargetUnit(UnitController removedUnit)
+        {
+            targetUnits.Remove(removedUnit);
+        }
+
+        public List<UnitController> FilterTargetUnits(TargetType targetType)
+        {
+            
+            List<UnitController> filteredUnits = new List<UnitController>();
+
+            if(targetUnits.Count <= 0)
+            {
+                return filteredUnits;
+            }
+            
+            switch (targetType)
+            {
+                case TargetType.RandomTarget:
+                    int randomUnit = Random.Range(0, targetUnits.Count);
+                    filteredUnits.Add(targetUnits[randomUnit]);
+                    break;
+                    
+                case TargetType.AllTargets:
+                    filteredUnits = targetUnits;
+                    break;
+
+            }
+                
+                return filteredUnits;
+            
+        }
+
+        public UnitController GetRandomTargetUnit()
+        {
+            int randomUnit = Random.Range(0, targetUnits.Count);
+            return targetUnits[randomUnit];
+        }
+
+        public List<UnitController> GetAllTargetUnits()
+        {
+            return targetUnits;
+        }
+
+    }
+
+

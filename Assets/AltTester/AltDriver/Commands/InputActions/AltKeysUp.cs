@@ -1,3 +1,18 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:e4c48ec06c235f87aa582f5c52cf4f15df174b21bdd1ffd8ad426b78277bd2b1
-size 508
+namespace Altom.AltDriver.Commands
+{
+    public class AltKeysUp : AltBaseCommand
+    {
+        AltKeysUpParams cmdParams;
+
+        public AltKeysUp(IDriverCommunication commHandler, AltKeyCode[] keyCodes) : base(commHandler)
+        {
+            this.cmdParams = new AltKeysUpParams(keyCodes);
+        }
+        public void Execute()
+        {
+            CommHandler.Send(cmdParams);
+            var data = CommHandler.Recvall<string>(cmdParams);
+            ValidateResponse("Ok", data);
+        }
+    }
+}

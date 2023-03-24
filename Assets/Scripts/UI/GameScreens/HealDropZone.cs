@@ -1,3 +1,80 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:ca3f3092e1c9bd0ced0c9ff2d77ce0289ee049298df035fb99e56bc044815701
-size 2265
+using System;
+using UnityEngine;
+using UnityEngine.UIElements;
+
+namespace UIToolkitDemo
+{
+    [RequireComponent(typeof(UnitController))]
+    public class HealDropZone : MonoBehaviour
+    {
+        [Tooltip("Represents Health Potion drop area over each character.")]
+        [SerializeField] string m_SlotID;
+        [SerializeField] UIDocument m_GameScreenDocument;
+
+        [Range(1,100)]
+        [SerializeField] float m_PercentHealthBoost;
+
+        VisualElement m_Slot;
+        UnitController m_UnitController;
+        UnitHealthBehaviour m_UnitHealth;
+
+        int m_MaxHealth;
+        int m_HealthBoost;
+
+        public static Action UseOnePotion;
+
+        void OnEnable()
+        {
+            PotionScreen.SlotHealed += OnSlotHealed;
+            UnitController.UnitDied += OnUnitDied;
+        }
+
+        void OnDisable()
+        {
+            PotionScreen.SlotHealed -= OnSlotHealed;
+            UnitController.UnitDied -= OnUnitDied;
+        }
+        void Start()
+        {
+            m_UnitController = GetComponent<UnitController>();
+            m_UnitHealth = m_UnitController.healthBehaviour;
+            m_MaxHealth = m_UnitController.data.totalHealth;
+            m_HealthBoost = (int)(m_MaxHealth * m_PercentHealthBoost / 100f);
+            SetVisualElements();
+        }
+        void SetVisualElements()
+        {
+            VisualElement rootElement = m_GameScreenDocument.rootVisualElement;
+            m_Slot = rootElement.Query<VisualElement>(m_SlotID);
+            EnableSlot(true);
+        }
+
+        void EnableSlot(bool state)
+        {
+            if (m_Slot == null)
+                return;
+
+            m_Slot.style.display = (state) ? DisplayStyle.Flex : DisplayStyle.None;
+        }
+
+        // event-handling methods
+        void OnSlotHealed(VisualElement activeSlot)
+        {
+            // healed the associated unit
+            if (activeSlot == m_Slot)
+            {
+                m_UnitHealth?.ChangeHealth(m_HealthBoost);
+                UseOnePotion?.Invoke();
+            }
+        }
+
+        // disable healing slots for dead units
+        void OnUnitDied(UnitController deadUnit)
+        {
+            if (deadUnit == m_UnitController)
+            {
+                EnableSlot(false);
+            }
+        }
+    }
+}

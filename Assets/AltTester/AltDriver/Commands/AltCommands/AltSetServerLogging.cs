@@ -1,3 +1,20 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:967599d16425c58ae9e92656e2aea80ff10fced42cb504bf9308c6ac41374a60
-size 643
+using Altom.AltDriver.Logging;
+
+namespace Altom.AltDriver.Commands
+{
+    public class AltSetServerLogging : AltBaseCommand
+    {
+        private readonly AltSetServerLoggingParams cmdParams;
+
+        public AltSetServerLogging(IDriverCommunication commHandler, AltLogger logger, AltLogLevel logLevel) : base(commHandler)
+        {
+            this.cmdParams = new AltSetServerLoggingParams(logger, logLevel);
+        }
+        public void Execute()
+        {
+            this.CommHandler.Send(this.cmdParams);
+            var data = this.CommHandler.Recvall<string>(this.cmdParams);
+            ValidateResponse("Ok", data);
+        }
+    }
+}

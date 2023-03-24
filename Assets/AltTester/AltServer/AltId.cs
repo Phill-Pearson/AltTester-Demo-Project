@@ -1,3 +1,16 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:cb3dd12cf26765acbb4c2f957721c6b9a8e7128c87b87e48e8ead26a38c3710f
-size 307
+using UnityEngine;
+
+namespace Altom.AltTester
+{
+    [DisallowMultipleComponent]
+    public class AltId : MonoBehaviour
+    {
+
+        public string altID;
+        protected void OnValidate()
+        {
+            if (altID == null)
+                altID = System.Guid.NewGuid().ToString();
+        }
+    }
+}

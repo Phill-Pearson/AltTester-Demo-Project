@@ -1,3 +1,22 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:e11d349b6d29e6ee55ceb7241ae226b9f052e9418459f60b5a4588f417ddc5a4
-size 665
+using System;
+using Altom.AltDriver;
+using Altom.AltDriver.Commands;
+using Altom.AltTester.Communication;
+
+namespace Altom.AltTester.Commands
+{
+    class AltSwipeCommand : AltCommandWithWait<AltSwipeParams, string>
+    {
+        public AltSwipeCommand(ICommandHandler handler, AltSwipeParams cmdParams) : base(cmdParams, handler, cmdParams.wait)
+        {
+        }
+
+        public override string Execute()
+        {
+
+            UnityEngine.Vector2[] positions = { CommandParams.start.ToUnity(), CommandParams.end.ToUnity() };
+            InputController.SetMultipointSwipe(positions, CommandParams.duration, onFinish);
+            return "Ok";
+        }
+    }
+}

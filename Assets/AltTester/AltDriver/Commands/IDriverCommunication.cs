@@ -1,3 +1,19 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:0c6625c559e6b05d8039301804486066f40da4b6e3bfa5909bbceb5e5b17c83d
-size 628
+using System;
+using Altom.AltDriver.Notifications;
+
+namespace Altom.AltDriver.Commands
+{
+    public interface IDriverCommunication
+    {
+        void Send(CommandParams param);
+        T Recvall<T>(CommandParams param);
+        void AddNotificationListener<T>(NotificationType notificationType, Action<T> callback, bool overwrite);
+        void RemoveNotificationListener(NotificationType notificationType);
+        void Connect();
+        void Close();
+        void SetCommandTimeout(int timeout);
+        void SetDelayAfterCommand(float delay);
+        float GetDelayAfterCommand();
+        void SleepFor(float time);
+    }
+}

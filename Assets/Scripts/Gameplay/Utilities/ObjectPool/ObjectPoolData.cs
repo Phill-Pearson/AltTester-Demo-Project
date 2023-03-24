@@ -1,3 +1,12 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:19bc3426e749675370f41b6f3120cf4ef7d5bb54cd360db6304df9e3f776c465
-size 350
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+[CreateAssetMenu(fileName = "Data_ObjectPool_", menuName = "Utilities/Object Pool", order = 1)]
+public class ObjectPoolData : ScriptableObject
+{
+    [Header("Settings")]
+    public GameObject objectToPool;
+    public int amountToPool;
+    public bool shouldExpand;
+}

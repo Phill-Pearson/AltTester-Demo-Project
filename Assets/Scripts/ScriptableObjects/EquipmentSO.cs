@@ -1,3 +1,29 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:907858549441a89960e8da94d961ab44b42ff50262a1a74806c06825e3e30943
-size 681
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace UIToolkitDemo
+{
+    // represents inventory gear
+    public enum EquipmentType
+    {
+        Weapon,
+        Helmet,
+        Boots,
+        Gloves,
+        Shield,
+        Accessories,
+        All // for filtering
+    }
+
+    [CreateAssetMenu(fileName = "Assets/Resources/GameData/Equipment/EquipmentGameData", menuName = "UIToolkitDemo/Equipment", order = 2)]
+    public class EquipmentSO : ScriptableObject
+    {
+        public string equipmentName;
+        public EquipmentType equipmentType;
+        public Rarity rarity;
+        public int points;
+        public Sprite sprite;
+    }
+
+}

@@ -1,3 +1,19 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:c9b1818dca049995d5421593b38df7826a533ced4173a8e51d7534413e871c98
-size 644
+using System.Collections.Generic;
+
+namespace Altom.AltDriver.Commands
+{
+    public class AltGetAllElementsLight : AltBaseFindObjects
+    {
+        AltFindObjectsLightParams cmdParams;
+        public AltGetAllElementsLight(IDriverCommunication commHandler, By cameraBy, string cameraValue, bool enabled) : base(commHandler)
+        {
+            cmdParams = new AltFindObjectsLightParams("//*", cameraBy, SetPath(cameraBy, cameraValue), enabled);
+        }
+        public List<AltObjectLight> Execute()
+        {
+            CommHandler.Send(cmdParams);
+
+            return CommHandler.Recvall<List<AltObjectLight>>(cmdParams);
+        }
+    }
+}

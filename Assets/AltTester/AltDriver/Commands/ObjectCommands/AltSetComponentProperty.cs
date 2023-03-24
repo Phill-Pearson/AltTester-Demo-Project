@@ -1,3 +1,20 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:ea3ce00b9917c314dc72730cc6ae93b9788ae00f992b2cca1b11711a631ef510
-size 787
+namespace Altom.AltDriver.Commands
+{
+    public class AltSetComponentProperty : AltBaseCommand
+    {
+        AltSetObjectComponentPropertyParams cmdParams;
+
+        public AltSetComponentProperty(IDriverCommunication commHandler, string componentName, string propertyName, object value, string assemblyName, AltObject altObject) : base(commHandler)
+        {
+            var strValue = Newtonsoft.Json.JsonConvert.SerializeObject(value);
+            cmdParams = new AltSetObjectComponentPropertyParams(altObject, componentName, propertyName, assemblyName, strValue);
+        }
+        public void Execute()
+        {
+            CommHandler.Send(cmdParams);
+            var data = CommHandler.Recvall<string>(cmdParams);
+
+            ValidateResponse("valueSet", data);
+        }
+    }
+}

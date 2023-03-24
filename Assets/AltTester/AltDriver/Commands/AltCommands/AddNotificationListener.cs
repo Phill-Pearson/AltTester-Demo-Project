@@ -1,3 +1,26 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:ff7ce6b005072cdfbf124886163a03e8a00aebf1763fff359bded973979f6b31
-size 962
+using System;
+using Altom.AltDriver.Notifications;
+
+namespace Altom.AltDriver.Commands
+{
+    public class AddNotificationListener<T> : AltBaseCommand
+    {
+        private readonly ActivateNotification cmdParams;
+        private readonly Action<T> callback;
+        private readonly bool overwrite;
+
+        public AddNotificationListener(IDriverCommunication commHandler, NotificationType notificationType, Action<T> callback, bool overwrite) : base(commHandler)
+        {
+            this.cmdParams = new ActivateNotification(notificationType);
+            this.callback = callback;
+            this.overwrite = overwrite;
+        }
+        public void Execute()
+        {
+            this.CommHandler.AddNotificationListener(cmdParams.NotificationType, callback, overwrite);
+            this.CommHandler.Send(this.cmdParams);
+            var data = this.CommHandler.Recvall<string>(this.cmdParams);
+            ValidateResponse("Ok", data);
+        }
+    }
+}

@@ -1,3 +1,19 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:e820f6946fc5427ec46f50e28fb2b0101718b4ce9a7f51730ff88e808cc7e16c
-size 649
+using System.Collections.Generic;
+using Newtonsoft.Json;
+
+namespace Altom.AltDriver.Commands
+{
+    public class AltGetAllMethods : AltBaseCommand
+    {
+        AltGetAllMethodsParams cmdParams;
+        public AltGetAllMethods(IDriverCommunication commHandler, AltComponent altComponent, AltMethodSelection methodSelection = AltMethodSelection.ALLMETHODS) : base(commHandler)
+        {
+            cmdParams = new AltGetAllMethodsParams(altComponent, methodSelection);
+        }
+        public List<string> Execute()
+        {
+            CommHandler.Send(cmdParams);
+            return CommHandler.Recvall<List<string>>(cmdParams);
+        }
+    }
+}

@@ -1,3 +1,26 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:310ff3ddcf758ee17007ecd1bd807732394b70c2299ed6eea37447b869eddbbd
-size 767
+using Altom.AltDriver.Notifications;
+using Altom.AltTester.Communication;
+using UnityEngine.SceneManagement;
+
+namespace Altom.AltTester.Notification
+{
+    public class AltLoadSceneNotification : BaseNotification
+    {
+        public AltLoadSceneNotification(ICommandHandler commandHandler, bool isOn) : base(commandHandler)
+        {
+            SceneManager.sceneLoaded -= onSceneLoaded;
+
+            if (isOn)
+            {
+                SceneManager.sceneLoaded += onSceneLoaded;
+            }
+
+        }
+
+        static void onSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            var data = new AltLoadSceneNotificationResultParams(scene.name, (AltLoadSceneMode)mode);
+            SendNotification(data, "loadSceneNotification");
+        }
+    }
+}

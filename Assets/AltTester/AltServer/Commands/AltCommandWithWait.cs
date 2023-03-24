@@ -1,3 +1,31 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:d454f859a9537d74688f2f62128e4f5da8ca27914a5eb2a55a910da18ccab515
-size 980
+using System;
+using Altom.AltDriver;
+using Altom.AltDriver.Commands;
+using Altom.AltTester.Communication;
+
+namespace Altom.AltTester.Commands
+{
+    public abstract class AltCommandWithWait<TParam, TResult> : AltCommand<TParam, TResult> where TParam : CommandParams
+    {
+        private readonly bool _wait;
+        private readonly ICommandHandler _handler;
+
+        protected AltCommandWithWait(TParam commandParams, ICommandHandler handler, bool wait) : base(commandParams)
+        {
+            this._wait = wait;
+            this._handler = handler;
+        }
+        protected virtual void onFinish(Exception err)
+        {
+            if (this._wait)
+                if (err != null)
+                {
+                    _handler.Send(ExecuteAndSerialize<string>(() => throw new AltInnerException(err)));
+                }
+                else
+                {
+                    _handler.Send(ExecuteAndSerialize(() => "Finished"));
+                }
+        }
+    }
+}

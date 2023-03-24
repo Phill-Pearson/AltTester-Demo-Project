@@ -1,3 +1,33 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:1cb10f70e2ead1e2ac47e1417d4fac08357815df1ec82a57b9d0c3533688a761
-size 1062
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Playables;
+
+namespace UnityEngine.Timeline
+{
+	[Serializable]
+    [TrackClipType(typeof(VideoScriptPlayableAsset))]
+    [TrackColor(0.008f, 0.698f, 0.655f)]
+    public class VideoScriptPlayableTrack : TrackAsset
+	{
+        public override Playable CreateTrackMixer(PlayableGraph graph, GameObject go, int inputCount)
+        {
+            PlayableDirector playableDirector = go.GetComponent<PlayableDirector>();
+
+            ScriptPlayable<VideoSchedulerPlayableBehaviour> playable =
+                ScriptPlayable<VideoSchedulerPlayableBehaviour>.Create(graph, inputCount);
+
+            VideoSchedulerPlayableBehaviour videoSchedulerPlayableBehaviour =
+                   playable.GetBehaviour();
+
+            if (videoSchedulerPlayableBehaviour != null)
+            {
+                videoSchedulerPlayableBehaviour.director = playableDirector;
+                videoSchedulerPlayableBehaviour.clips = GetClips();
+            }
+
+            return playable;
+        }
+    }
+}
+

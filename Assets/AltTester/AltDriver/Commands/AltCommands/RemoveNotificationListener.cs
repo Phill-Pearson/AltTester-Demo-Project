@@ -1,3 +1,22 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:d1abbb092c8e924d09256611203062dd103197f03b119799a7c4e2f7bd17457c
-size 751
+using System;
+using Altom.AltDriver.Notifications;
+
+namespace Altom.AltDriver.Commands
+{
+    public class RemoveNotificationListener : AltBaseCommand
+    {
+        private readonly DeactivateNotification cmdParams;
+
+        public RemoveNotificationListener(IDriverCommunication commHandler, NotificationType notificationType) : base(commHandler)
+        {
+            this.cmdParams = new DeactivateNotification(notificationType);
+        }
+        public void Execute()
+        {
+            this.CommHandler.RemoveNotificationListener(cmdParams.NotificationType);
+            this.CommHandler.Send(this.cmdParams);
+            var data = this.CommHandler.Recvall<string>(this.cmdParams);
+            ValidateResponse("Ok", data);
+        }
+    }
+}

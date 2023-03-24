@@ -1,3 +1,22 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:a24814e05ed5c47d5d572fb3d475ff39cc3e1571ee59c9ed63580809f7f58088
-size 503
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class AltScrollViewButtonController : MonoBehaviour
+{
+    // Start is called before the first frame update
+    public static int Counter = 0;
+    void Start()
+    {
+        Counter = 0;
+        GetComponent<Button>().onClick.AddListener(OnClick);
+    }
+
+    // Update is called once per frame
+    public void OnClick()
+    {
+        Counter++;
+        Debug.Log("Tapped:  " + name);
+    }
+}

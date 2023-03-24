@@ -1,3 +1,13 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:f9d457abf9f2e559d74da09e457423d539a4587c8c7f29b5ee8f160246f4511b
-size 305
+using System;
+using UnityEngine;
+using UnityEngine.Playables;
+using UnityEngine.Timeline;
+
+[Serializable]
+public class LightControlBehaviour : PlayableBehaviour
+{
+    public Color color = Color.white;
+    public float intensity = 1f;
+    public float bounceIntensity = 1f;
+    public float range = 10f;
+}

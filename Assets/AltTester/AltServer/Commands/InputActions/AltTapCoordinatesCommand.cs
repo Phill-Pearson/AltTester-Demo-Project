@@ -1,3 +1,20 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:c00157c644724949f14408f16122768da6c88d8fd0cf06b3817589b66c09a24f
-size 639
+using System;
+using Altom.AltDriver;
+using Altom.AltDriver.Commands;
+using Altom.AltTester.Communication;
+
+namespace Altom.AltTester.Commands
+{
+    public class AltTapCoordinatesCommand : AltCommandWithWait<AltTapCoordinatesParams, string>
+    {
+        public AltTapCoordinatesCommand(ICommandHandler handler, AltTapCoordinatesParams cmdParams) : base(cmdParams, handler, cmdParams.wait)
+        {
+        }
+
+        public override string Execute()
+        {
+            InputController.TapCoordinates(CommandParams.coordinates.ToUnity(), CommandParams.count, CommandParams.interval, onFinish);
+            return "Ok";
+        }
+    }
+}

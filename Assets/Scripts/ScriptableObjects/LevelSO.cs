@@ -1,3 +1,18 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:8bbe4ab09ec49e1c58f15d3594c01fc56bfca3e294b7f4de405edea973f88261
-size 611
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UIElements;
+using UnityEngine.SceneManagement;
+
+namespace UIToolkitDemo
+{
+    // holds basic level information (label name, level number, scene name for loading, thumbnail graphic for display, etc.)
+    [CreateAssetMenu(fileName = "Assets/Resources/GameData/Levels/LevelData", menuName = "UIToolkitDemo/Level", order = 11)]
+    public class LevelSO : ScriptableObject
+    {
+        public int levelNumber;
+        public string levelLabel;
+        public Sprite thumbnail;
+        public string sceneName;
+    }
+}

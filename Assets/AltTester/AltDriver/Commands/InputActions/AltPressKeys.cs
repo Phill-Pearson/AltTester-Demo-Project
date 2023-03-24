@@ -1,3 +1,26 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:a4a32777da738dcd1c7b5d363f9dfcd482aa57605b66d8088a8f27dffb51eb00
-size 876
+namespace Altom.AltDriver.Commands
+{
+    public class AltPressKeys : AltBaseCommand
+    {
+        AltPressKeyboardKeysParams cmdParams;
+        public AltPressKeys(IDriverCommunication commHandler, AltKeyCode[] keyCodes, float power, float duration, bool wait) : base(commHandler)
+        {
+            cmdParams = new AltPressKeyboardKeysParams(keyCodes, power, duration, wait);
+        }
+        public void Execute()
+        {
+            CommHandler.Send(cmdParams);
+            var data = CommHandler.Recvall<string>(cmdParams);
+            ValidateResponse("Ok", data);
+
+            if (cmdParams.wait)
+            {
+                foreach (AltKeyCode key in cmdParams.keyCodes)
+                {
+                    data = CommHandler.Recvall<string>(cmdParams);
+                    ValidateResponse("Finished", data);
+                }
+            }
+        }
+    }
+}

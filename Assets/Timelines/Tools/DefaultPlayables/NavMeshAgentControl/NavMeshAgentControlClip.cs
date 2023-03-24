@@ -1,3 +1,25 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:5bd03e8ec9730d3ee9a5825225117fadf3120e3ea65f8ff0c87fd8fa3f9940bd
-size 784
+using System;
+using UnityEngine;
+using UnityEngine.Playables;
+using UnityEngine.Timeline;
+
+[Serializable]
+public class NavMeshAgentControlClip : PlayableAsset, ITimelineClipAsset
+{
+    public ExposedReference<Transform> destination;
+    [HideInInspector]
+    public NavMeshAgentControlBehaviour template = new NavMeshAgentControlBehaviour ();
+
+    public ClipCaps clipCaps
+    {
+        get { return ClipCaps.None; }
+    }
+
+    public override Playable CreatePlayable (PlayableGraph graph, GameObject owner)
+    {
+        var playable = ScriptPlayable<NavMeshAgentControlBehaviour>.Create (graph, template);
+        NavMeshAgentControlBehaviour clone = playable.GetBehaviour ();
+        clone.destination = destination.Resolve (graph.GetResolver ());
+        return playable;
+    }
+}

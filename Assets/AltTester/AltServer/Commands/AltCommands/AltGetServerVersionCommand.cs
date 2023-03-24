@@ -1,3 +1,13 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:0d959189a8a32ccef2de969d4ed70e2063f3647ab7d42c958d7c85d339437e12
-size 376
+using Altom.AltDriver.Commands;
+
+namespace Altom.AltTester.Commands
+{
+    public class AltGetServerVersionCommand : AltCommand<AltGetServerVersionParams, string>
+    {
+        public AltGetServerVersionCommand(AltGetServerVersionParams cmdParams) : base(cmdParams) { }
+        public override string Execute()
+        {
+            return AltRunner.VERSION;
+        }
+    }
+}

@@ -1,3 +1,20 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:5590364e6549b2930c23ce958d69d06fb430cc63ccb586b31e1bd8e56b91dc27
-size 714
+using System.Collections.Generic;
+
+namespace Altom.AltDriver.Commands
+{
+    public class AltGetAllProperties : AltBaseCommand
+    {
+        AltGetAllPropertiesParams cmdParams;
+
+        public AltGetAllProperties(IDriverCommunication commHandler, AltComponent altComponent, AltObject altObject, AltPropertiesSelections altPropertiesSelections = AltPropertiesSelections.ALLPROPERTIES) : base(commHandler)
+        {
+            cmdParams = new AltGetAllPropertiesParams(altObject.id, altComponent, altPropertiesSelections);
+
+        }
+        public List<AltProperty> Execute()
+        {
+            CommHandler.Send(cmdParams);
+            return CommHandler.Recvall<List<AltProperty>>(cmdParams);
+        }
+    }
+}

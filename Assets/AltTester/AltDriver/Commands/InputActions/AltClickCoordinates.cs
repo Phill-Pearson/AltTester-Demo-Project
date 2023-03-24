@@ -1,3 +1,22 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:575a85406c51651a1889c09c698650530071e58bc6337e285429f233c68e82b0
-size 787
+namespace Altom.AltDriver.Commands
+{
+    public class AltClickCoordinates : AltBaseCommand
+    {
+        AltClickCoordinatesParams cmdParams;
+        public AltClickCoordinates(IDriverCommunication commHandler, AltVector2 coordinates, int count, float interval, bool wait) : base(commHandler)
+        {
+            cmdParams = new AltClickCoordinatesParams(coordinates, count, interval, wait);
+        }
+        public void Execute()
+        {
+            CommHandler.Send(cmdParams);
+            string data = CommHandler.Recvall<string>(cmdParams);
+            ValidateResponse("Ok", data);
+            if (cmdParams.wait)
+            {
+                data = CommHandler.Recvall<string>(cmdParams); ;
+                ValidateResponse("Finished", data);
+            }
+        }
+    }
+}

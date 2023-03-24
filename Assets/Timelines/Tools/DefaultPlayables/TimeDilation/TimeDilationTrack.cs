@@ -1,3 +1,13 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:a4e8bca2e6f7727762dd075f014b8e137676f4811a11aa047debb8532fce2f0a
-size 400
+using UnityEngine;
+using UnityEngine.Playables;
+using UnityEngine.Timeline;
+
+[TrackColor(0.855f, 0.8623f, 0.87f)]
+[TrackClipType(typeof(TimeDilationClip))]
+public class TimeDilationTrack : TrackAsset
+{
+    public override Playable CreateTrackMixer(PlayableGraph graph, GameObject go, int inputCount)
+    {
+        return ScriptPlayable<TimeDilationMixerBehaviour>.Create (graph, inputCount);
+    }
+}

@@ -1,3 +1,21 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:cc91033d254deb04973fc9e6cd7bfefd987912c6c2022c554646e3f452e8ce0f
-size 759
+namespace Altom.AltDriver.Commands
+{
+    public class AltGetPNGScreenshot : AltBaseCommand
+    {
+        string path;
+        AltGetPNGScreenshotParams cmdParams;
+        public AltGetPNGScreenshot(IDriverCommunication commHandler, string path) : base(commHandler)
+        {
+            this.path = path;
+            this.cmdParams = new AltGetPNGScreenshotParams();
+        }
+        public void Execute()
+        {
+            CommHandler.Send(cmdParams);
+            var message = CommHandler.Recvall<string>(cmdParams);
+            ValidateResponse("Ok", message);
+            string screenshotData = CommHandler.Recvall<string>(cmdParams);
+            System.IO.File.WriteAllBytes(path, System.Convert.FromBase64String(screenshotData));
+        }
+    }
+}

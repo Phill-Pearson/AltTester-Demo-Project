@@ -1,3 +1,34 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:e6a02c4ed4aa0800b559489c05ef877ea271d915e122d2a22a866d5a89a91afc
-size 1020
+using System;
+using Altom.AltDriver;
+using Altom.AltDriver.Commands;
+using Altom.AltTester.Communication;
+
+namespace Altom.AltTester.Commands
+{
+    public class AltEndTouchCommand : AltCommandWithWait<AltEndTouchParams, string>
+    {
+        private readonly ICommandHandler _handler;
+        int fingerId;
+        public AltEndTouchCommand(ICommandHandler handler, AltEndTouchParams cmdParams) : base(cmdParams, handler, true)
+        {
+            this._handler = handler;
+        }
+        public override string Execute()
+        {
+            InputController.EndTouch(CommandParams.fingerId, onFinish);
+            return "Ok";
+        }
+        //TODO: remove this
+        protected override void onFinish(Exception err)
+        {
+            if (err != null)
+            {
+                _handler.Send(ExecuteAndSerialize<string>(() => throw new AltInnerException(err)));
+            }
+            else
+            {
+                _handler.Send(ExecuteAndSerialize(() => "Ok"));
+            }
+        }
+    }
+}

@@ -1,3 +1,30 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:079b97737f175ecda7b0a3d450b3488966019962d4429e91d0d34fc77413f26e
-size 655
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UIToolkitDemo;
+
+    public class UnitAudioBehaviour : MonoBehaviour
+    {
+
+        
+
+        [Header("Component Reference")]
+        public AudioSource audioSource;
+
+        [Header("SFX Volume Override")]
+        public float sfxDeathVolume;
+
+     
+        void SetAudioSourceVolume(float newVolume)
+        {
+            audioSource.volume = newVolume;
+        }
+
+        void PlayAudioClip(AudioClip selectedAudioClip)
+        {
+        //audioSource.PlayOneShot(selectedAudioClip);
+        AudioManager.PlayOneSFX(selectedAudioClip, Vector3.zero);
+        }
+    }
+
+

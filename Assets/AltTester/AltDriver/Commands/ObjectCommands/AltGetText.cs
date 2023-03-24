@@ -1,3 +1,18 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:efd49bb945c488f8d8b34e3ae4f88b849458651d0a821d934d82d4726a07233a
-size 472
+namespace Altom.AltDriver.Commands
+{
+    public class AltGetText : AltBaseCommand
+    {
+        readonly AltGetTextParams cmdParams;
+
+        public AltGetText(IDriverCommunication commHandler, AltObject altObject) : base(commHandler)
+        {
+            cmdParams = new AltGetTextParams(altObject);
+        }
+
+        public string Execute()
+        {
+            CommHandler.Send(cmdParams);
+            return CommHandler.Recvall<string>(cmdParams);
+        }
+    }
+}

@@ -1,3 +1,25 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:f0ca62baeb62441135a35ba74d60e58549313b30c0529771570d917c714dca88
-size 831
+using System.Collections.Generic;
+using Altom.AltDriver;
+using Altom.AltDriver.Commands;
+
+namespace Altom.AltTester.Commands
+{
+    class AltFindObjectsLightCommand : AltBaseClassFindObjectsCommand<List<AltObjectLight>>
+    {
+        public AltFindObjectsLightCommand(BaseFindObjectsParams cmdParams) : base(cmdParams)
+        {
+        }
+
+        public override List<AltObjectLight> Execute()
+        {
+            var path = new PathSelector(CommandParams.path);
+            var foundObjects = new List<AltObjectLight>();
+            foreach (UnityEngine.GameObject testableObject in FindObjects(null, path.FirstBound, false, CommandParams.enabled))
+            {
+                foundObjects.Add(AltRunner._altRunner.GameObjectToAltObjectLight(testableObject));
+            }
+
+            return foundObjects;
+        }
+    }
+}

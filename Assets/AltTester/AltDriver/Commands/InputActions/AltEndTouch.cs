@@ -1,3 +1,18 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:9adddd3e4f7634fd905772428f88d5501481d482fdab2096a005b9093b99393e
-size 507
+namespace Altom.AltDriver.Commands
+{
+    public class AltEndTouch : AltBaseCommand
+    {
+        AltEndTouchParams cmdParams;
+
+        public AltEndTouch(IDriverCommunication commHandler, int fingerId) : base(commHandler)
+        {
+            this.cmdParams = new AltEndTouchParams(fingerId);
+        }
+        public void Execute()
+        {
+            CommHandler.Send(cmdParams);
+            var data = CommHandler.Recvall<string>(cmdParams);
+            ValidateResponse("Ok", data);
+        }
+    }
+}

@@ -1,3 +1,18 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:0ec613820208d36e34528d77bfa5e8b31a1108de6e62349b147d246efcf501fb
-size 541
+using System.Collections.Generic;
+
+namespace Altom.AltDriver.Commands
+{
+    internal class AltGetAllLoadedScenes : AltBaseCommand
+    {
+        private readonly AltGetAllLoadedScenesParams cmdParams;
+        public AltGetAllLoadedScenes(IDriverCommunication commHandler) : base(commHandler)
+        {
+            cmdParams = new AltGetAllLoadedScenesParams();
+        }
+        public List<string> Execute()
+        {
+            CommHandler.Send(cmdParams);
+            return CommHandler.Recvall<List<string>>(cmdParams);
+        }
+    }
+}

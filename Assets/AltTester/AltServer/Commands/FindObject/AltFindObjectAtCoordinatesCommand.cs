@@ -1,3 +1,21 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:7160259e35004926f8971c8bd43c48a1d56c6e96be0617371729678f39c25e37
-size 646
+using Altom.AltDriver;
+using Altom.AltDriver.Commands;
+
+namespace Altom.AltTester.Commands
+{
+    class AltFindObjectAtCoordinatesCommand : AltCommand<AltFindObjectAtCoordinatesParams, AltObject>
+    {
+        public AltFindObjectAtCoordinatesCommand(AltFindObjectAtCoordinatesParams cmdParam) : base(cmdParam) { }
+
+        public override AltObject Execute()
+        {
+            UnityEngine.GameObject gameObject = FindObjectViaRayCast.FindObjectAtCoordinates(CommandParams.coordinates.ToUnity());
+
+            if (gameObject == null) return null;
+
+            return AltRunner._altRunner.GameObjectToAltObject(gameObject);
+        }
+
+
+    }
+}

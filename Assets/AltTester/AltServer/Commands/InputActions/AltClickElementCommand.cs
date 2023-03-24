@@ -1,3 +1,23 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:cbcad9229df880c6bffc711043aac06bd9a005b8ec72bd78f8ed58b1aca7c47d
-size 931
+using System;
+using Altom.AltDriver;
+using Altom.AltDriver.Commands;
+using Altom.AltTester.Communication;
+
+namespace Altom.AltTester.Commands
+{
+    class AltClickElementCommand : AltCommandWithWait<AltClickElementParams, AltObject>
+    {
+        public AltClickElementCommand(ICommandHandler handler, AltClickElementParams cmdParams) : base(cmdParams, handler, cmdParams.wait)
+        {
+        }
+
+        public override AltObject Execute()
+        {
+            AltRunner._altRunner.ShowClick(new UnityEngine.Vector2(CommandParams.altObject.GetScreenPosition().x, CommandParams.altObject.GetScreenPosition().y));
+            UnityEngine.GameObject gameObject = AltRunner.GetGameObject(CommandParams.altObject.id);
+            
+            InputController.ClickElement(gameObject, CommandParams.count, CommandParams.interval, onFinish);
+            return AltRunner._altRunner.GameObjectToAltObject(gameObject);
+        }
+    }
+}

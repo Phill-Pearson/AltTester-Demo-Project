@@ -1,3 +1,48 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:a62e1a25e0b80b5dfe97acb474f1544c1da9c35e4fb46f2ae049875f2be7e46e
-size 956
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using TMPro;
+
+public class NumberDisplayBehaviour : MonoBehaviour
+{
+
+    [Header("Animation")]
+    public Animation numberAnimation;
+
+    [Header("Display")]
+    public TextMeshPro textDisplay;
+
+    public void SetupDisplay(int newNumber, Vector3 newPosition, Color newColor)
+    {
+        UpdateNumber(newNumber);
+        UpdateColor(newColor);
+        UpdatePosition(newPosition);
+        PlaySequence();
+    }    
+
+    void UpdateNumber(int numberValue)
+    {
+        textDisplay.SetText(numberValue.ToString());
+    }
+
+    void UpdateColor(Color color)
+    {
+        textDisplay.color = color;
+    }
+
+    void UpdatePosition(Vector3 position)
+    {
+        transform.SetPositionAndRotation(position, transform.rotation);
+    }
+
+    void PlaySequence()
+    {
+        numberAnimation.Play();
+    }
+
+    void RemoveNumber()
+    {
+        gameObject.SetActive(false);
+    }
+
+}

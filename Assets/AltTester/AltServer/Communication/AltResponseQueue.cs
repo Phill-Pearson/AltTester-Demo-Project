@@ -1,3 +1,37 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:9bbe2b9568430e9c65c662f53da14dde1365be09a4b86012d407f1deb23e79aa
-size 882
+﻿using System.Collections.Generic;
+
+namespace Altom.AltTester.Communication
+{
+    public delegate void SendResponse();
+
+    public class AltResponseQueue
+    {
+        private readonly Queue<SendResponse> responseQueue = new Queue<SendResponse>();
+        private readonly object queueLock = new object();
+
+        public void Cycle()
+        {
+            if (responseQueue.Count == 0) return;
+            lock (queueLock)
+            {
+                if (responseQueue.Count > 0)
+                {
+                    responseQueue.Dequeue()();
+                }
+            }
+        }
+
+        public void ScheduleResponse(SendResponse newResponse)
+        {
+            lock (queueLock)
+            {
+                if (responseQueue.Count < 100)
+                {
+                    responseQueue.Enqueue(newResponse);
+                }
+            }
+        }
+    }
+}
+
+

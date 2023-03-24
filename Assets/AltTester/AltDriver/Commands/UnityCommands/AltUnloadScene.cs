@@ -1,3 +1,21 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:3b9afd1915360abedaac929989223c1e8674094307d4b6bbf2b7e12b0706ee5a
-size 633
+namespace Altom.AltDriver.Commands
+{
+    public class AltUnloadScene : AltBaseCommand
+    {
+        AltUnloadSceneParams cmdParams;
+        public AltUnloadScene(IDriverCommunication commHandler, string sceneName) : base(commHandler)
+        {
+            cmdParams = new AltUnloadSceneParams(sceneName);
+        }
+        public void Execute()
+        {
+            CommHandler.Send(cmdParams);
+
+            var data = CommHandler.Recvall<string>(cmdParams);
+            ValidateResponse("Ok", data);
+
+            data = CommHandler.Recvall<string>(cmdParams);
+            ValidateResponse("Scene Unloaded", data);
+        }
+    }
+}

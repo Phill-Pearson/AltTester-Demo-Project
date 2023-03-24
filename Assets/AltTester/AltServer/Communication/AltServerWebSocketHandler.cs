@@ -1,3 +1,56 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:3e0b4d191078025737e16a846229cc9c3ee6d220e953396502844cd5b7ec6e4f
-size 1671
+using Altom.AltTester.Logging;
+using AltWebSocketSharp;
+using AltWebSocketSharp.Server;
+
+namespace Altom.AltTester.Communication
+{
+    public class AltServerWebSocketHandler : WebSocketBehavior
+    {
+        private static readonly NLog.Logger logger = ServerLogManager.Instance.GetCurrentClassLogger();
+        private ICommandHandler commandHandler;
+
+        public CommunicationErrorHandler OnErrorHandler;
+        public CommunicationHandler OnClientConnected;
+        public CommunicationHandler OnClientDisconnected;
+
+        public AltServerWebSocketHandler()
+        {
+
+        }
+
+        public void Init(ICommandHandler cmdHandler)
+        {
+            this.commandHandler = cmdHandler;
+            commandHandler.OnSendMessage += this.Send;
+        }
+
+        protected override void OnOpen()
+        {
+            base.OnOpen();
+
+            logger.Debug("Client " + this.ID + " connected.");
+            if (OnClientConnected != null) OnClientConnected.Invoke();
+        }
+
+        protected override void OnClose(CloseEventArgs e)
+        {
+            base.OnClose(e);
+            logger.Debug("Client " + this.ID + " disconnected.");
+            if (OnClientDisconnected != null) OnClientDisconnected.Invoke();
+            commandHandler.OnSendMessage -= this.Send;
+        }
+
+        protected override void OnError(ErrorEventArgs e)
+        {
+            base.OnError(e);
+            if (OnErrorHandler != null)
+                OnErrorHandler.Invoke(e.Message, e.Exception);
+        }
+
+        protected override void OnMessage(MessageEventArgs e)
+        {
+            base.OnMessage(e);
+            commandHandler.OnMessage(e.Data);
+        }
+    }
+}

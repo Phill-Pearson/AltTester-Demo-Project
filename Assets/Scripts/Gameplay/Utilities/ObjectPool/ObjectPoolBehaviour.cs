@@ -1,3 +1,52 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:ee3ae2a0f12715b7f70453d405a6b18fb800e2427fccaf1d92ebccacea228c21
-size 1083
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class ObjectPoolBehaviour : MonoBehaviour
+{
+
+    public ObjectPoolData data;
+
+    private List<GameObject> pooledObjects;
+
+    void Awake()
+    {
+        CreatePool();
+    }
+
+    public void CreatePool()
+    {
+        pooledObjects = new List<GameObject>();
+
+        for(int i = 0; i < data.amountToPool; i++)
+        {
+            GameObject obj = (GameObject)Instantiate(data.objectToPool);
+            obj.SetActive(false);
+            pooledObjects.Add(obj);
+        }
+        
+    }
+
+    public GameObject GetPooledObject()
+    {
+        for(int i = 0; i < pooledObjects.Count; i++)
+        {
+            if(!pooledObjects[i].activeInHierarchy)
+            {
+                return pooledObjects[i];
+            }
+        }
+
+        if(data.shouldExpand)
+        {
+            GameObject obj = (GameObject)Instantiate(data.objectToPool);
+            obj.SetActive(false);
+            pooledObjects.Add(obj);
+            return obj;
+        }
+       
+        return null;
+        
+    }
+
+}

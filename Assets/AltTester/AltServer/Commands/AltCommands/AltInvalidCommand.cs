@@ -1,3 +1,21 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:fa23bc29e8dcf405381f576bceed8fa36ee4af10278e7388bf1c3b253558264d
-size 539
+using System;
+using Altom.AltDriver;
+using Altom.AltDriver.Commands;
+
+namespace Altom.AltTester.Commands
+{
+    public class AltInvalidCommand : AltCommand<CommandParams, string>
+    {
+        private readonly Exception ex;
+
+
+        public AltInvalidCommand(CommandParams cmdParams, Exception ex) : base(cmdParams ?? new CommandParams(AltErrors.errorInvalidCommand, null))
+        {
+            this.ex = ex;
+        }
+        public override string Execute()
+        {
+            throw new InvalidCommandException(ex);
+        }
+    }
+}

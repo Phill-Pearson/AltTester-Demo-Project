@@ -1,3 +1,47 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:e1f995c28ebacfd2a1c05c8454e7dfd3f44514cdfb5b9269a75ae4e42eae5b1b
-size 974
+using UnityEngine;
+using System;
+using System.IO;
+
+namespace UIToolkitDemo
+{
+    // writes and read SaveData to and from disk
+    public class FileManager
+    {
+		public static bool WriteToFile(string fileName, string fileContents)
+		{
+			var fullPath = Path.Combine(Application.persistentDataPath, fileName);
+
+			try
+			{
+				File.WriteAllText(fullPath, fileContents);
+				return true;
+			}
+			catch (Exception e)
+			{
+				Debug.LogError($"Failed to write to {fullPath} with exception {e}");
+				return false;
+			}
+		}
+
+		public static bool LoadFromFile(string fileName, out string result)
+		{
+			var fullPath = Path.Combine(Application.persistentDataPath, fileName);
+			if (!File.Exists(fullPath))
+			{
+				File.WriteAllText(fullPath, "");
+			}
+			try
+			{
+				result = File.ReadAllText(fullPath);
+				return true;
+			}
+			catch (Exception e)
+			{
+				Debug.LogError($"Failed to read from {fullPath} with exception {e}");
+				result = "";
+				return false;
+			}
+		}
+
+	}
+}

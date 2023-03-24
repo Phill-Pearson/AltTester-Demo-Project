@@ -1,3 +1,18 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:af66fc49b68266c02dbdc99a9b563f782cd8a8146223b5908212be16ba1f1a7d
-size 465
+using Altom.AltDriver.Logging;
+
+namespace Altom.AltDriver.Notifications
+{
+    public class AltLogNotificationResultParams
+    {
+        public string message;
+        public string stackTrace;
+        public AltLogLevel level;
+
+        public AltLogNotificationResultParams(string message, string stackTrace, AltLogLevel level)
+        {
+            this.message = message;
+            this.stackTrace = stackTrace;
+            this.level = level;
+        }
+    }
+}

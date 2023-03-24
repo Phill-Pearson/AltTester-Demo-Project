@@ -1,3 +1,20 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:d59303f2f327bd3e2108ed8af25f341310077078fd176b7e8b1bd510d34671bf
-size 542
+using System;
+using UnityEngine;
+using UnityEngine.Playables;
+using UnityEngine.Timeline;
+
+[Serializable]
+public class LightControlClip : PlayableAsset, ITimelineClipAsset
+{
+    public LightControlBehaviour template = new LightControlBehaviour ();
+
+    public ClipCaps clipCaps
+    {
+        get { return ClipCaps.Blending; }
+    }
+
+    public override Playable CreatePlayable (PlayableGraph graph, GameObject owner)
+    {
+        var playable = ScriptPlayable<LightControlBehaviour>.Create (graph, template);
+        return playable;    }
+}

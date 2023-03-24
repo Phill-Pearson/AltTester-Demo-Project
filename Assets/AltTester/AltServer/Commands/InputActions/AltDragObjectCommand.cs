@@ -1,3 +1,29 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:2cb692431392e41dc7e77ab141917161cee5379f870e307eb0cb62e8a0790a12
-size 1465
+﻿using Altom.AltDriver;
+using Altom.AltDriver.Commands;
+
+
+
+namespace Altom.AltTester.Commands
+{
+    class AltDragObjectCommand : AltCommand<AltDragObjectParams, AltObject>
+    {
+        public AltDragObjectCommand(AltDragObjectParams cmdParams) : base(cmdParams)
+        {
+        }
+
+        public override AltObject Execute()
+        {
+            var mockUp = new AltMockUpPointerInputModule();
+
+            var pointerEventData = mockUp.ExecuteTouchEvent(new UnityEngine.Touch() { position = new UnityEngine.Vector2(CommandParams.position.x, CommandParams.position.y) });
+            UnityEngine.GameObject gameObject = AltRunner.GetGameObject(CommandParams.altObject.id);
+            UnityEngine.Camera viewingCamera = AltRunner._altRunner.FoundCameraById(CommandParams.altObject.idCamera);
+            UnityEngine.Vector3 gameObjectPosition = viewingCamera.WorldToScreenPoint(gameObject.transform.position);
+            pointerEventData.delta = pointerEventData.position - new UnityEngine.Vector2(gameObjectPosition.x, gameObjectPosition.y);
+            UnityEngine.EventSystems.ExecuteEvents.Execute(gameObject, pointerEventData, UnityEngine.EventSystems.ExecuteEvents.dragHandler);
+            var camera = AltRunner._altRunner.FoundCameraById(CommandParams.altObject.idCamera);
+
+            return camera != null ? AltRunner._altRunner.GameObjectToAltObject(gameObject, camera) : AltRunner._altRunner.GameObjectToAltObject(gameObject);
+        }
+    }
+}

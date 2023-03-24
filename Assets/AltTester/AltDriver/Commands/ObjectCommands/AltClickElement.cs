@@ -1,3 +1,28 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:cbb34eda3a754ee7d0d341004c10999c51a0a076d804b85d4da63ababe359ce8
-size 817
+namespace Altom.AltDriver.Commands
+{
+    public class AltClickElement : AltCommandReturningAltElement
+    {
+        AltClickElementParams cmdParams;
+
+        public AltClickElement(IDriverCommunication commHandler, AltObject altObject, int count, float interval, bool wait) : base(commHandler)
+        {
+            cmdParams = new AltClickElementParams(
+            altObject,
+             count,
+             interval,
+             wait);
+        }
+        public AltObject Execute()
+        {
+            CommHandler.Send(cmdParams);
+            var element = ReceiveAltObject(cmdParams);
+
+            if (cmdParams.wait)
+            {
+                var data = CommHandler.Recvall<string>(cmdParams);
+                ValidateResponse("Finished", data);
+            }
+            return element;
+        }
+    }
+}

@@ -1,3 +1,23 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:3620414a081b6fd733281dd105fda8a73926310067ef689ffb04bd7d2be70d0e
-size 676
+using Newtonsoft.Json;
+
+namespace Altom.AltDriver.Commands
+{
+    public class AltLoadScene : AltBaseCommand
+    {
+        AltLoadSceneParams cmdParams;
+        public AltLoadScene(IDriverCommunication commHandler, string sceneName, bool loadSingle) : base(commHandler)
+        {
+            cmdParams = new AltLoadSceneParams(sceneName, loadSingle);
+        }
+        public void Execute()
+        {
+            CommHandler.Send(cmdParams);
+
+            var data = CommHandler.Recvall<string>(cmdParams);
+            ValidateResponse("Ok", data);
+
+            data = CommHandler.Recvall<string>(cmdParams);
+            ValidateResponse("Scene Loaded", data);
+        }
+    }
+}

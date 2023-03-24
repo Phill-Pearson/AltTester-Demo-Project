@@ -1,3 +1,25 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:29a1e71291526ae82a6253224bf7ac033f7ab8e54a584525c47df0075818e125
-size 607
+using Altom.AltDriver;
+using Altom.AltDriver.Commands;
+using UnityEngine;
+
+namespace Altom.AltTester.Commands
+{
+    class AltKeysUpCommand : AltCommand<AltKeysUpParams, string>
+    {
+        public AltKeysUpCommand(AltKeysUpParams cmdParams) : base(cmdParams)
+        {
+        }
+
+        public override string Execute()
+        {
+
+#if ALTTESTER
+            foreach (var keyCode in CommandParams.keyCodes)
+                InputController.KeyUp((UnityEngine.KeyCode)keyCode);
+            return "Ok";
+#else
+            throw new AltInputModuleException(AltErrors.errorInputModule);
+#endif
+        }
+    }
+}

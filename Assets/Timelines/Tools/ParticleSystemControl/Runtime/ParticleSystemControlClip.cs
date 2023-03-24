@@ -1,3 +1,25 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:27aa4eadb2aaf38fbdf0a87cd28b25d1a3af735fdd20f7ef8af7bb3cf9926580
-size 685
+// Timeline Particle Control Example
+// https://github.com/keijiro/TimelineParticleControl
+
+using UnityEngine;
+using UnityEngine.Playables;
+using UnityEngine.Timeline;
+
+namespace Klak.Timeline {
+
+// Clip asset class for particle system control
+
+[System.Serializable]
+public class ParticleSystemControlClip : PlayableAsset, ITimelineClipAsset
+{
+    public ParticleSystemControlPlayable template = new ParticleSystemControlPlayable();
+
+    public ClipCaps clipCaps { get { return ClipCaps.Blending; } }
+
+    public override Playable CreatePlayable(PlayableGraph graph, GameObject go)
+    {
+        return ScriptPlayable<ParticleSystemControlPlayable>.Create(graph, template);
+    }
+}
+
+}
