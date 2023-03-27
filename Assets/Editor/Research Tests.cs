@@ -1,5 +1,9 @@
 using NUnit.Framework;
 using Altom.AltDriver;
+using System.Collections;
+using UnityEngine;
+using UnityEngine.TestTools;
+using System.Linq;
 
 public class ResearchTests
 {   //Important! If your test file is inside a folder that contains an .asmdef file, please make sure that the assembly definition references NUnit.
