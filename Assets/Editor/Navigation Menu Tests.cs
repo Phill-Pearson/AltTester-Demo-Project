@@ -15,11 +15,21 @@ public class MenuIconConstructor {
 public class NavigationMenuTests
 {   //Important! If your test file is inside a folder that contains an .asmdef file, please make sure that the assembly definition references NUnit.
     public AltDriver altDriver;
+    public AltVector2 screenSize;
+
+    AltVector2 HomeMenuIcon = new AltVector2(0.05f, 0.65f);
+    AltVector2 HeroesMenuIcon = new AltVector2(0.05f, 0.55f);
+    AltVector2 ResourcesMenuIcon = new AltVector2(0.05f, 0.40f);
+    AltVector2 ShopMenuIcon = new AltVector2(0.05f, 0.25f);
+    AltVector2 MailMenuIcon = new AltVector2(0.05f, 0.10f);
+
+
     //Before any test it connects with the socket
     [OneTimeSetUp]
     public void SetUp()
     {
         altDriver = new AltDriver();
+        screenSize = altDriver.GetApplicationScreenSize();
     }
 
     //At the end of the test closes the connection with the socket
@@ -36,12 +46,12 @@ public class NavigationMenuTests
     public void ClickTheHeroesMenuIcon()
     {
 
-        // Declare the important variable. a string name "CharScreen".
-        // A new object from the class constructor.
-        const string StringNameToCompare = "CharScreen";
-        var HeroesMenuIcon = new MenuIconConstructor { x = 40f, y = 200f };
-        var GetCurrentScene = altDriver.GetCurrentScene();
+        altDriver.LoadScene("MainMenu");
+        altDriver.WaitForCurrentSceneToBe("MainMenu");
+        Assert.AreEqual(altDriver.GetCurrentScene(), "MainMenu");
 
+        const string StringNameToCompare = "CharScreen";
+        var GetCurrentScene = altDriver.GetCurrentScene();
 
         if (GetCurrentScene == "MainMenu")
         {
@@ -49,7 +59,7 @@ public class NavigationMenuTests
             var CharScreenObject = altDriver.WaitForObject(By.NAME, "CharScreen");
 
             // use positional variables to go to and click a new vector2 
-            altDriver.MoveMouse(new AltVector2(HeroesMenuIcon.x, HeroesMenuIcon.y), 1);
+            altDriver.MoveMouse(screenSize * HeroesMenuIcon, 1);
             altDriver.PressKey(AltKeyCode.Mouse0, 0.1f);
             Debug.Log("Action 1: Heroes Menu Icon was clicked!");
 
@@ -77,8 +87,11 @@ public class NavigationMenuTests
     public void ClickTheHomeMenuIcon()
     {
 
+        altDriver.LoadScene("MainMenu");
+        altDriver.WaitForCurrentSceneToBe("MainMenu");
+        Assert.AreEqual(altDriver.GetCurrentScene(), "MainMenu");
+
         const string StringNameToCompare = "HomeScreen";
-        var HomeMenuIcon = new MenuIconConstructor { x = 40f, y = 260f };
         var GetCurrentScene = altDriver.GetCurrentScene();
 
         if (GetCurrentScene == "MainMenu")
@@ -86,7 +99,7 @@ public class NavigationMenuTests
             var HomeScreenObject = altDriver.WaitForObject(By.NAME, "HomeScreen");
             
             // use positional variables to go to and click a new vector2 
-            altDriver.MoveMouse(new AltVector2(HomeMenuIcon.x, HomeMenuIcon.y), 1);
+            altDriver.MoveMouse(screenSize * HomeMenuIcon, 1);
             altDriver.PressKey(AltKeyCode.Mouse0, 0.1f);
             Debug.Log("Action 1: Home Menu Icon was clicked!");
 
@@ -113,9 +126,11 @@ public class NavigationMenuTests
     [Test]
     public void ClickTheResourcesMenuIcon()
     {
+        altDriver.LoadScene("MainMenu");
+        altDriver.WaitForCurrentSceneToBe("MainMenu");
+        Assert.AreEqual(altDriver.GetCurrentScene(), "MainMenu");
 
         const string StringNameToCompare = "InventoryScreen";
-        var ResourcesMenuIcon = new MenuIconConstructor { x = 40f, y = 140f };
         var GetCurrentScene = altDriver.GetCurrentScene();
 
         if (GetCurrentScene == "MainMenu")
@@ -123,7 +138,7 @@ public class NavigationMenuTests
             var InventoryScreenObject = altDriver.WaitForObject(By.NAME, "InventoryScreen");
             
             // use positional variables to go to and click a new vector2 
-            altDriver.MoveMouse(new AltVector2(ResourcesMenuIcon.x, ResourcesMenuIcon.y), 1);
+            altDriver.MoveMouse(screenSize * ResourcesMenuIcon, 1);
             altDriver.PressKey(AltKeyCode.Mouse0, 0.1f);
             Debug.Log("Action 1: Resources Menu Icon was clicked!");
 
@@ -150,9 +165,11 @@ public class NavigationMenuTests
     [Test]
     public void ClickTheShopMenuIcon()
     {
+        altDriver.LoadScene("MainMenu");
+        altDriver.WaitForCurrentSceneToBe("MainMenu");
+        Assert.AreEqual(altDriver.GetCurrentScene(), "MainMenu");
 
         const string StringNameToCompare = "ShopScreen";
-        var ShopMenuIcon = new MenuIconConstructor { x = 40f, y = 90f };
         var GetCurrentScene = altDriver.GetCurrentScene();
 
         if (GetCurrentScene == "MainMenu")
@@ -160,7 +177,7 @@ public class NavigationMenuTests
             var ShopScreenObject = altDriver.WaitForObject(By.NAME, "ShopScreen");
             
             // use positional variables to go to and click a new vector2 
-            altDriver.MoveMouse(new AltVector2(ShopMenuIcon.x, ShopMenuIcon.y), 1);
+            altDriver.MoveMouse(screenSize * ShopMenuIcon, 1);
             altDriver.PressKey(AltKeyCode.Mouse0, 0.1f);
             Debug.Log("Action 1: Shop Menu Icon was clicked!");
 
@@ -187,9 +204,11 @@ public class NavigationMenuTests
     [Test]
     public void ClickTheMailMenuIcon()
     {
+        altDriver.LoadScene("MainMenu");
+        altDriver.WaitForCurrentSceneToBe("MainMenu");
+        Assert.AreEqual(altDriver.GetCurrentScene(), "MainMenu");
 
         const string StringNameToCompare = "MailScreen";
-        var MailMenuIcon = new MenuIconConstructor { x = 40f, y = 30f };
         var GetCurrentScene = altDriver.GetCurrentScene();
 
         if (GetCurrentScene == "MainMenu")
@@ -197,7 +216,7 @@ public class NavigationMenuTests
             var MailScreenObject = altDriver.WaitForObject(By.NAME, "MailScreen");
             
             // use positional variables to go to and click a new vector2 
-            altDriver.MoveMouse(new AltVector2(MailMenuIcon.x, MailMenuIcon.y), 1);
+            altDriver.MoveMouse(screenSize * MailMenuIcon, 1);
             altDriver.PressKey(AltKeyCode.Mouse0, 0.1f);
             Debug.Log("Action 1: Mail Menu Icon was clicked!");
 
